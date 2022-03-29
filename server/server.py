@@ -28,5 +28,5 @@ def post():
         return str(data)
 
 if __name__ == "__main__":
-    # app.run(host='172.28.130.54', port= 8000, debug=True)
-    app.run(port=8000,debug=True)
+    app.run(host='192.168.100.34', port= 8000, debug=True)
+    # app.run(port=8000,debug=True)
