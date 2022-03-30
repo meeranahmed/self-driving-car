@@ -6,7 +6,7 @@ from urllib.request import urlopen
 import time
 
 while True:
-    videoURL = 'http://192.168.100.6:8080/shot.jpg?rnd=579668'
+    videoURL = 'http://172.28.132.153:8080/shot.jpg?rnd=688739'
     Respons = urllib.request.urlopen(videoURL)
     numpy_img = np.array(bytearray(Respons.read()),dtype=np.uint8)
     image = cv2.imdecode(numpy_img ,-1)

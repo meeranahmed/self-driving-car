@@ -8,7 +8,7 @@ import AppButton from "../components/CustomButton";
 export default function Manual() {
   const clickHandler = (id) => {
     console.log(id)
-    const PostURL =`http://192.168.100.34:8000/get/?val=${id}`
+    const PostURL =`http://172.28.132.223:8000/get/?val=${id}`
     fetch(PostURL)
     
     .catch((error) => alert(error)) // 

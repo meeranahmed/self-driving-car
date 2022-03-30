@@ -9,7 +9,7 @@ export default function Home() {
     const postData = async (id) => {
         try {
             await fetch(
-                'http://192.168.100.34:8000/post', {
+                'http://172.28.132.223:8000/post', {
                     method: 'POST',
                     headers: {
                       Accept: 'application/json',
