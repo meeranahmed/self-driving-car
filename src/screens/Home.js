@@ -6,25 +6,13 @@ export default function Home() {
 
 
   
-    const postData = async (id) => {
-        try {
-            await fetch(
-                'http://172.28.132.223:8000/post', {
-                    method: 'POST',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      value: id,
-
-                    })
-                  });
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
+  const clickHandler = (id) => {
+    console.log(id)
+    const PostURL =`http://192.168.172.174:8000/get/?val=${id}`
+    fetch(PostURL)
+    
+    .catch((error) => alert(error)) // 
+  };
   const navigation = useNavigation();
   const navigationHandler = (id) => {
       if (id === 0) {
@@ -37,9 +25,9 @@ export default function Home() {
   };
   return (
     <View style={styles.container}>
-        <AppButton  title="Manual" onPress={() => { postData(0); navigationHandler(0);} }/>
+        <AppButton  title="Manual" onPress={() => { clickHandler(0) ;navigationHandler(0);} }/>
         <View style={styles.m1}/>
-        <AppButton  title="Automatic"  onPress={() => { postData(1); navigationHandler(1);}}/>
+        <AppButton  title="Automatic"  onPress={() => {  clickHandler(1) ; navigationHandler(1);}}/>
     </View>
 
   );

@@ -7,8 +7,8 @@
 #include <SPI.h>
 SoftwareSerial s(3,1);
 
-const char* ssid = "SSID";
-const char* password = "PASS";
+const char* ssid = "STUDBME2";
+const char* password = "BME2Stud";
  
 void setup () {
   s.begin(9600);
@@ -25,28 +25,24 @@ void setup () {
   Serial.println("Connected to WiFi Network");
  
 }
+}
  
 void loop() {
  
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
             HTTPClient http;  //Declare an object of class HTTPClient
-            WiFiClient client;
-     http.begin(client,"http://192.168.172.174:8000/send");  //Specify request destination
-     int httpCode = http.GET(); //Send the request
-     Serial.println(httpCode);
-
+     http.begin("http://172.28.132.219:8000/send");  //Specify request destination
+     int httpCode = http.GET();     //Send the request
      if (httpCode > 0) { //Check the returning code
-       String payload = http.getString(); //Get the request response payload
-       Serial.println(payload);
-//       char data='f';
-         s.write(payload[0]); //connection bet esp & arduino
-//       //Serial.println(1);
-        Serial.println(payload);
-        Serial.println(1);
-        delay(100);
-        //Serial.println(payload[0]); 
+       payload = http.getString(); //Get the request response payload
+       char data='f';
+       s.write(data); //connection bet esp & arduino
+       //Serial.println(1);
+       Serial.println(data);
+       delay(1000);
+       Serial.println(payload[0]); 
      }
-     delay(100);
+     delay(1500);
      http.end();
   
  

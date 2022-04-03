@@ -8,7 +8,7 @@ import AppButton from "../components/CustomButton";
 export default function Manual() {
   const clickHandler = (id) => {
     console.log(id)
-    const PostURL =`http://172.28.132.223:8000/get/?val=${id}`
+    const PostURL =`http://192.168.172.174:8000/get/?val=${id}`
     fetch(PostURL)
     
     .catch((error) => alert(error)) // 
@@ -16,13 +16,16 @@ export default function Manual() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Manual Mode</Text>
-      <AppButton  title="up" icon="upcircleo" onPress={()=> {clickHandler(1)}} />
       <View style={styles.m1}/>
-      <AppButton  title="down" icon="downcircleo" onPress={()=> {clickHandler(2)}} />
+      <AppButton  title="forward" icon="upcircleo" onPress={()=> {clickHandler(4)}} />
       <View style={styles.m1}/>
-      <AppButton title="left" icon="leftcircleo" onPress={()=> {clickHandler(3)}} />
+      <AppButton  title="backword" icon="downcircleo" onPress={()=> {clickHandler(3)}} />
       <View style={styles.m1}/>
-      <AppButton title="right" icon="rightcircleo" onPress={()=> {clickHandler(4)}} />
+      <AppButton title="left" icon="leftcircleo" onPress={()=> {clickHandler(5)}} />
+      <View style={styles.m1}/>
+      <AppButton title="right" icon="rightcircleo" onPress={()=> {clickHandler(6)}} />
+      <View style={styles.m1}/>
+      <AppButton title="stop" icon="rightcircleo" onPress={()=> {clickHandler(2)}} />
 
     </View>
   );

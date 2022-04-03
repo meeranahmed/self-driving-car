@@ -9,6 +9,41 @@ int in2 = 9;
 int enB = 6;
 int in3 =10;
 int in4 = 11;
+
+char espData;
+char WhichServer=' ';
+const int trigPinL = 2;
+const int echoPinL = 3;
+const int trigPinR = 12;
+const int echoPinR = 13;
+long durationL = 0;
+int distanceL=0;
+long durationR=0;
+int distanceR=0;
+int sumRight=0;
+int sumLeft=0;
+
+float DistanceLeft(){
+  digitalWrite(trigPinL, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPinL, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPinL, LOW);
+  durationL = pulseIn(echoPinL, HIGH);
+  distanceL= durationL*0.034/2;
+  return distanceL;
+  }
+float DistanceRight(){
+  digitalWrite(trigPinR, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPinR, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPinR, LOW);
+  durationR = pulseIn(echoPinR, HIGH);
+  distanceR= durationR*0.034/2;
+  return distanceR;
+  } 
+  
 void setup(){
 Serial.begin(9600); 
 pinMode(enA, OUTPUT);
@@ -17,6 +52,10 @@ pinMode(in1, OUTPUT);
 pinMode(in2, OUTPUT);
 pinMode(in3, OUTPUT);
 pinMode(in4, OUTPUT);
+pinMode(trigPinL, OUTPUT); 
+pinMode(echoPinL, INPUT);
+pinMode(trigPinR, OUTPUT); 
+pinMode(echoPinR, INPUT);
 
 
 }
@@ -26,10 +65,9 @@ void Forword(){
   digitalWrite(in2, HIGH);  
   digitalWrite(in3, LOW);
   digitalWrite(in4,HIGH); 
-  analogWrite(enA, 255);
-  analogWrite(enB, 255);
-  Serial.print("NO FORMAT");       // prints a label
-
+  analogWrite(enA, 100);
+  analogWrite(enB, 100);
+ 
   }
   
 void Backword(){
@@ -46,15 +84,14 @@ void Right(){
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH); 
   analogWrite(enA, 0);
-  analogWrite(enB, 170);
-  Serial.print("NO FORMAT"); 
+  analogWrite(enB, 100);
   }
 void Left(){
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);  
   digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW); 
-  analogWrite(enA, 170);
+  analogWrite(enA, 100);
   analogWrite(enB, 0);
   }  
 void Stop(){
@@ -69,38 +106,112 @@ void Stop(){
 
 
 void loop() {
-//   put your man code here, to run repeatedly:
-//delay(500);
-//Left();
-//Forword();
-//Right();
-//Backword();
+   //put your man code here, to run repeatedly:
+espData = readStringEsp();
+Serial.println(espData);
 
-  Dir = readStringEsp();
-  Serial.println(Dir);
+if (espData == '1' || espData == '0'){
+  WhichServer = espData;
+  }
+else{
+  Dir = espData;
+  }  
 
-  if(Dir == 's'){
+while(WhichServer == '0'){
+  espData = readStringEsp();
+  Serial.println(espData);
+
+  if (espData == '1' || espData == '0'){
+    WhichServer = espData;
+  }
+  else{
+    Dir = espData;
+  }  
+  Serial.println("Manual");
+  if(Dir == '2'){
    Serial.println("Stop");
    Stop();
    }
-  else if(Dir == 'b'){
+  else if(Dir == '3'){
     Serial.println("back");
     Backword();
     }
-  else if(Dir == '1'){
+  else if(Dir == '4'){
     Serial.println("Forword");
     Forword();
     }
-  else if(Dir == 'l'){
+  else if(Dir == '5'){
     Serial.println("Left");
     Left();
     }  
-  else if(Dir == 'r'){
+  else if(Dir == '6'){
     Serial.println("Right");
     Right();
     } 
   }  
+  
+while(WhichServer == '1'){
+  espData = readStringEsp();
+  Serial.println(espData);
+  
+  if (espData == '1' || espData == '0'){
+    WhichServer = espData;
+  }
+  else{
+    Dir = espData;
+  } 
+  Serial.println("Automatic");
+    if(Dir == '2'){
+      Serial.println("Stop");
+      Stop();
+      }
+    else if(Dir == '4'){
+      Serial.println("Forword");
+      Forword();
+      delay(800);
+      analogWrite(enA, 0);
+      analogWrite(enB, 0);
+      delay(200 );
+      }
+     else if(Dir == '5'){
+      Serial.println("Left");
+      Left();
+      delay(250);
+      analogWrite(enA, 0);
+      analogWrite(enB, 0); 
+      delay(750);
+      }
+     else if(Dir == '6'){
+      Serial.println("Right");
+      Right();
+      delay(250);
+      analogWrite(enA, 0);
+      analogWrite(enB, 0);
+      delay(750); 
+      }
+  distanceR = DistanceRight();
+  distanceL = DistanceLeft();
+  if((distanceR <20)&&(distanceL > 20) && (distanceR != 0)&&(distanceL != 0)){
+    Serial.println("Right Object");
+    Left();
+    delay(300);
+    Forword();
+    delay(400);
+    Stop();
+    
+    }
+  else if((distanceR >20)&&(distanceL < 20) && (distanceR != 0)&&(distanceL != 0)){
+    Serial.println("Left Object");
+    Right();
+    delay(300);
+    Forword();
+    delay(400);
+    Stop();
+    }  
 
+ 
+} 
+}
 char readStringEsp() {
   char dataRecieved ;
   char chBuffer;

@@ -1,6 +1,4 @@
-from flask import Flask , request,Response
-from flask_cors import CORS, cross_origin
-
+from flask import Flask, request, Response
 import time
 import cv2
 import numpy as np
@@ -10,17 +8,18 @@ import sys
 import json
 from imageio import imread
 import matplotlib.pyplot as plt
+from flask_cors import CORS, cross_origin
 
 import logging
 import cv2
 import datetime
 import math
 
-app=Flask(__name__)
+
+PATH_TO_TEST_IMAGES_DIR = './img'
+
+app = Flask(__name__)
 CORS(app)
-cors = CORS(app, resource={
-    r"/*":{"origins":"*"}
-})
 
 _SHOW_IMAGE = False
 
@@ -340,63 +339,53 @@ def test_photo(file):
     cv2.imwrite('finalimage.jpg', combo_image)
 
 
-
-# mode = 1
-
-@app.route("/")
-def main():
-    return 'main'
-
-# 1-Get Mode From Mobile: 0 = Manual , 1 = Auto
-@app.route('/post', methods=['POST'])
-def post():
+@app.route('/', methods=['POST', 'GET'])
+def index():
     if request.method == 'POST':
-        data = request.get_json()
-        print(data["value"])
-        # print(type(mode))
-        return str(data)
-
-# 2-Get Manual Direction From Mobile
-mode = 'm'
-@app.route("/get/",methods=['GET'])
-def move():
-    global dir,mode
-    value=request.args.get('val')
-    mode=str(value)
-    dir=value
-    print(value)
-    print(dir)
-    return str(dir)
-
-# Send Manual Direction value to Arduino    
-@app.route("/send",methods=['GET'])
-def send():
-    global mode
-    if(mode == '0' or mode == '2' or mode == '3' or mode == '4' or mode == '5' or mode == '6' ):
-        return str(dir)
-    elif(mode == '1'):
-        mode='m'
-        return str(dir)
-    elif (mode == 'm'):
-        # test_photo("../webcam/auto.png")
-        test_photo(sys.path[0]+"/img/1.jpeg")
-        print(DirectionSendToServer[-1])
-        return(Response(DirectionSendToServer[-1]))
+        DirectionFromManual.append(request.json)
+        print(DirectionFromManual)
+        return (DirectionFromManual[-1])
     else:
-        return "Error"
+        if DirectionFromManual != [None]:
+            return(DirectionFromManual[-1])
+        else:
+            return('')
+
+
+@app.route('/id', methods=['POST', 'GET'])
+def id():
+    if request.method == 'POST':
+        id.append(request.json)
+        print("id")
+        return ("Res")
+    else:
+        if (id != [None]):
+            finalId = id[-1]
+            return(finalId)
+        else:
+            return({'id': ''})
 
 
 @app.route('/image', methods=['GET'])
 def image():
-    # time.sleep(0.5)
-    test_photo(sys.path[0]+"/img/1.jpeg")
-    print(DirectionSendToServer[-1])
-    return(Response(DirectionSendToServer[-1]))
-    
-if __name__ == "__main__":
+
+    # if request.method == 'POST':
+    #     imageFromServer = request.files['image']  # get the image
+    #     frame = "finalimage.jpg"
+    #     imageFromServer.save('%s' % (frame))
+    #     test_photo(frame)
+    #     print(DirectionSendToServer[-1])
+    #     Response("%s saved" % frame)
+    #     return("Data Sent from auto")
+    # else:
+        # time.sleep(0.5)
+        test_photo("./img/5.jpeg")
+        print(DirectionSendToServer[-1])
+        return(Response(DirectionSendToServer[-1]))
+
+
+if __name__ == '__main__':
     DirectionSendToServer = [None]
     DirectionFromManual = [None]
     id = [None]
-    # app.run(host='192.168.172.174', port= 8000, debug=True)
-    app.run(host='192.168.1.12', port= 8000, debug=True)
-    # app.run(port=8000,debug=True)
+    app.run(debug=True)
