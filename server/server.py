@@ -15,6 +15,8 @@ import logging
 import cv2
 import datetime
 import math
+import sys
+sys.path.append('../webcam')
 
 app=Flask(__name__)
 CORS(app)
@@ -82,7 +84,6 @@ def detect_lane(frame):
 def detect_edges(frame):
     # filter for blue lane lines
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
     lower_blue = np.array([30, 40, 0])
     upper_blue = np.array([150, 255, 255])
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
@@ -287,11 +288,11 @@ def display_heading_line(frame, steering_angle, numberOflines, line_color=(0, 0,
         DirectionSendToServer.append('5')
         print('l')
 # or (streeung_angle == 95) and numberOfLines ==2
-    elif ((85 <= steering_angle <= 92) and (numberOflines == 2)):
+    elif ((85 <= steering_angle <= 96) and (numberOflines == 2)):
         DirectionSendToServer.append('4')
         print('f')
 
-    elif ((92 < steering_angle <= 180) or (steering_angle == 91 and numberOflines == 1)):
+    elif ((100 < steering_angle <= 180) or (steering_angle == 91 and numberOflines == 1)):
         DirectionSendToServer.append('6')
         print('r')
     else:
@@ -357,7 +358,7 @@ def post():
         return str(data)
 
 # 2-Get Manual Direction From Mobile
-mode = 'm'
+mode = '0'
 @app.route("/get/",methods=['GET'])
 def move():
     global dir,mode
@@ -376,10 +377,10 @@ def send():
         return str(dir)
     elif(mode == '1'):
         mode='m'
-        return str(dir)
+        return str(dir) 
     elif (mode == 'm'):
         # test_photo("../webcam/auto.png")
-        test_photo(sys.path[0]+"/img/1.jpeg")
+        test_photo(sys.path[0]+"/img/auto.png")
         print(DirectionSendToServer[-1])
         return(Response(DirectionSendToServer[-1]))
     else:
@@ -389,7 +390,7 @@ def send():
 @app.route('/image', methods=['GET'])
 def image():
     # time.sleep(0.5)
-    test_photo(sys.path[0]+"/img/1.jpeg")
+    test_photo(sys.path[0]+"/img/auto.png")
     print(DirectionSendToServer[-1])
     return(Response(DirectionSendToServer[-1]))
     
@@ -398,5 +399,5 @@ if __name__ == "__main__":
     DirectionFromManual = [None]
     id = [None]
     # app.run(host='192.168.172.174', port= 8000, debug=True)
-    app.run(host='192.168.1.12', port= 8000, debug=True)
+    app.run(host='192.168.172.174', port= 8000, debug=True)
     # app.run(port=8000,debug=True)

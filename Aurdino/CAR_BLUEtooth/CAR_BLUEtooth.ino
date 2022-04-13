@@ -3,10 +3,10 @@
 char Dir;
 char readStringEsp();
 
-int enA = 5;
+int enA = 6;
 int in1 = 8;
 int in2 = 9;
-int enB = 6;
+int enB = 5;
 int in3 =10;
 int in4 = 11;
 
@@ -60,23 +60,24 @@ pinMode(echoPinR, INPUT);
 
 }
 
-void Forword(){
+void Backword(){
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);  
   digitalWrite(in3, LOW);
   digitalWrite(in4,HIGH); 
-  analogWrite(enA, 100);
-  analogWrite(enB, 100);
- 
+  analogWrite(enA, 80);
+  analogWrite(enB, 80);
+
   }
   
-void Backword(){
+void Forword(){
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);  
   digitalWrite(in3, HIGH);  
   digitalWrite(in4, LOW)  ; 
-  analogWrite(enA, 100);
-  analogWrite(enB, 100);
+  analogWrite(enA, 80);
+  analogWrite(enB, 80);
+
 }
 void Right(){
   digitalWrite(in1, HIGH);
@@ -84,15 +85,17 @@ void Right(){
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH); 
   analogWrite(enA, 0);
-  analogWrite(enB, 100);
+  analogWrite(enB, 80);
+
   }
 void Left(){
   digitalWrite(in1, LOW);
   digitalWrite(in2, HIGH);  
   digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW); 
-  analogWrite(enA, 100);
+  analogWrite(enA, 80);
   analogWrite(enB, 0);
+
   }  
 void Stop(){
   digitalWrite(in1, LOW);
@@ -169,24 +172,21 @@ while(WhichServer == '1'){
       Serial.println("Forword");
       Forword();
       delay(800);
-      analogWrite(enA, 0);
-      analogWrite(enB, 0);
-      delay(200 );
+      Stop();
+      delay(800 );
       }
      else if(Dir == '5'){
       Serial.println("Left");
       Left();
       delay(250);
-      analogWrite(enA, 0);
-      analogWrite(enB, 0); 
+      Stop(); 
       delay(750);
       }
      else if(Dir == '6'){
       Serial.println("Right");
       Right();
       delay(250);
-      analogWrite(enA, 0);
-      analogWrite(enB, 0);
+      Stop();
       delay(750); 
       }
   distanceR = DistanceRight();
