@@ -1,6 +1,6 @@
-# Self_Driving_Car
+# Self Driving Car
 
-<p align="center"><img src="./imgs/03.png" alt="" width="600"/></p>
+<p align="center"><img src="./imgs/header.jpg" alt="" width="600"/></p>
 
 ## This Project consists of two modes 
 ### 1. Manual Mode
@@ -9,7 +9,7 @@
 ---
 
 ## 1. **Manual Mode**
-* The user select from the mobile ui ( Manual Mode ). 
+* The user select from the home page Manual mode. 
 * The user starts to select the direction where the car would move. 
 * The car recieves the required direction through the esp WiFi module.
 * The WiFi module starts to send this direction to the arduino which will lead the motors to move in this direction.
@@ -21,11 +21,11 @@
 </p>
 
 ## 1. **Automatic Mode**
-* The user select from the mobile ui ( Automatic Mode ). 
+* The user select from the home page Autoatic mode.. 
 * The car webcam starts to take images of the car lane.
-* The webcam starts to send the images to the server.
-* The server starts to send the image to the lane detection algorithm to detect the direction which the car should move to.
-* The server sends the result direction to the esp WiFi module.
+* The webcam sends the images to the server.
+* The server sends the image to the lane detection algorithm to detect the direction which the car should move to.
+* The detected direction will be sent to the esp WiFi module through the server.
 * The WiFi module sends the direction to the arduino to make the motors move to this direction.
 ### Mobile UI Sample
 
@@ -36,14 +36,14 @@
 
 ## Project code structure:
 
-### 1. Server app:
+### 1. Server side:
 * Responsible for sending and receiving images to be processed and directions between the mobile and the car esp WiFi module.
 * Tools used:
     -   flask
     -   python
 
-### 2. Mobile app:
-* Responsible for switching between different modes and sending directions to the server in case of manual mode.
+### 2. Client app:
+* A Mobile application responsible for switching between different modes and sending directions to the server in case of manual mode.
 * Tools used:
     -   React js
 
