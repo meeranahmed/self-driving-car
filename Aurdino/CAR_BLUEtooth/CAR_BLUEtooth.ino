@@ -173,21 +173,21 @@ while(WhichServer == '1'){
       Forword();
       delay(800);
       Stop();
-      delay(800 );
+      delay(2000);
       }
      else if(Dir == '5'){
       Serial.println("Left");
       Left();
       delay(250);
       Stop(); 
-      delay(750);
+      delay(2000);
       }
      else if(Dir == '6'){
       Serial.println("Right");
       Right();
       delay(250);
       Stop();
-      delay(750); 
+      delay(2000); 
       }
   distanceR = DistanceRight();
   distanceL = DistanceLeft();

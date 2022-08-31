@@ -7,8 +7,8 @@
 #include <SPI.h>
 SoftwareSerial s(3,1);
 
-const char* ssid = "Loozazzz";
-const char* password = "251198radwa";
+const char* ssid = "STUDBME2";
+const char* password = "BME2Stud";
  
 void setup () {
   s.begin(9600);
@@ -31,9 +31,9 @@ void loop() {
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
             HTTPClient http;  //Declare an object of class HTTPClient
             WiFiClient client;
-     http.begin(client,"http://192.168.172.174:8000/send");  //Specify request destination
+     http.begin(client,"http://172.28.129.116:8000/send");  //Specify request destination
      int httpCode = http.GET(); //Send the request
-     //Serial.println(httpCode);
+//     Serial.println(httpCode);
 
      if (httpCode > 0) { //Check the returning code
        String payload = http.getString(); //Get the request response payload
@@ -44,10 +44,10 @@ void loop() {
 //       //Serial.println(1);
         //Serial.println(payload);
         //Serial.println(1);
-        delay(100);
+        delay(50);
         //Serial.println(payload[0]); 
      }
-     delay(100);
+     delay(50);
      http.end();
   
  
